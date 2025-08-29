@@ -2,7 +2,6 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 import configparser
 from sqlalchemy.engine import URL
-import os # Import os for path handling
 
 # --- Your existing get_engine function ---
 def get_engine():
@@ -30,27 +29,20 @@ def get_engine():
     return engine
 
 # --- New function to read CSV data ---
-def read_csv_data(file_path):
-
-    df = pd.read_csv(file_path)
+def read_csv_data(engine):
+    df = pd.read_csv('us_customer_data 3.csv')
     return df
 
 # --- Your existing insert_data function ---
 def insert_data(engine, df, table_name):
-   
     df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
-    
-
 
 # --- Main workflow updated with cleaning steps ---
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__)) # Gets the directory of the current script
-    csv_file_path = os.path.join(script_dir, 'us_customer_data 3.csv') 
-
     engine = get_engine()
 
-    # 3. Read data from the CSV file
-    cd = read_csv_data(csv_file_path)
+    # Extracting the .csv_file which we defined above the main() clause 
+    cd = read_csv_data(engine)
 
     # Step 1: Deduplication
     initial_rows = len(cd)
@@ -79,3 +71,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
