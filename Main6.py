@@ -41,9 +41,14 @@ def main():
 
     tier_map = {'Gold': 2, 'Silver': 1, 'Bronze': 0}
     df['customer_tier'] = df['loyalty_status'].map(tier_map)
-
+    
+    print("\n--- Transformed Data Preview ---")
+    print(df.head())
+    
+    
     load_data(df, engine)
 
 
 if __name__ == "__main__":
     main()
+
